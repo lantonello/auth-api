@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use App\Exceptions\ApiException;
 
 /**
@@ -19,14 +20,21 @@ abstract class BaseRepository
 
     abstract protected function listFields(): array;
 
+    public function list(): ?Collection
+    {
+        $fields = $this->listFields() ?? '*';
+
+        return $this->query()->select($fields)->get();
+    }
+
     /**
-     * Returns a list of records
+     * Returns a list of all records
      */
     public function listAll(): ?Collection
     {
         $fields = $this->listFields() ?? '*';
 
-        return $this->query()->select($fields)->get();
+        return $this->query()->withTrashed()->select($fields)->get();
     }
 
     /**
@@ -110,7 +118,7 @@ abstract class BaseRepository
 
         if( ! $model instanceof $this->model )
         {
-            return null;
+            throw new ApiException( Lang::get('general.record_not_found') );
         }
 
         DB::beginTransaction();
@@ -140,6 +148,11 @@ abstract class BaseRepository
     {
         $model = $this->get($id);
 
+        if( ! $model instanceof $this->model )
+        {
+            throw new ApiException( Lang::get('general.record_not_found') );
+        }
+
         DB::beginTransaction();
 
         try
@@ -152,7 +165,7 @@ abstract class BaseRepository
         catch( Exception $e )
         {
             DB::rollBack();
-            return $e;
+            throw new ApiException($e->getMessage());
         }
     }
 
