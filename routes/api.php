@@ -16,6 +16,8 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/signup', [UserController::class, 'signUp']);
 Route::post('/signin', [AuthController::class, 'signIn']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');
 
 Route::middleware(JWTChecker::class)->group(function(){
     //

@@ -10,6 +10,8 @@ return [
 
     'api_error' => 'An error has occurred',
     'record_not_found' => 'Record not found',
+    'reset_link_sent' => 'You will soon receive an email with a link to reset your password.',
+    'password_reset' => 'Your password has been reset.',
 
     'users' => [
         'create_error' => 'An error occurred while registering the user',

@@ -10,6 +10,8 @@ return [
 
     'api_error' => 'Ocorreu um erro',
     'record_not_found' => 'Registro não encontrado',
+    'reset_link_sent' => 'Em breve você receberá um email com um link para redefinição de sua senha',
+    'password_reset' => 'Sua senha foi redefinida.',
 
     'users' => [
         'create_error' => 'Ocorreu um erro ao cadastrar o usuário',
